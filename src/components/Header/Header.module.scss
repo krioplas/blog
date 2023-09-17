@@ -1,0 +1,58 @@
+.Header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  a {
+    text-decoration: none;
+  }
+  &_logo {
+    display: flex;
+    color: black;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+  }
+  &_authentication {
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+.authorization {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 20px;
+  width: 84px;
+  height: 51px;
+  color: black;
+}
+
+.registration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 109px;
+  height: 51px;
+  border-radius: 5px;
+  border: 1px solid #52c41a;
+  color: #52c41a;
+}
+.registration:hover {
+  color: #ffffff;
+  background-color: #52c41a;
+}
+.create_article {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #52c41a;
+  width: 112px;
+  height: 31px;
+  font-size: 12px;
+  border-radius: 5px;
+  border: 1px solid #52c41a;
+}

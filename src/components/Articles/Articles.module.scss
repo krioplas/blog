@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 26px;
+  align-items: center;
+  padding: 26px 0;
+}
+.articleOne {
+  width: 941px;
+  height: 100%;
+  background-color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px 0 #00000026;
+  font-family: 'Inter Regular', sans-serif;
+  overflow-wrap: break-word;
+}
