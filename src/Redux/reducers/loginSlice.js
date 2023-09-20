@@ -1,51 +1,56 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchLogin = createAsyncThunk(
-  'userLogin/fetchLogin',
-  async (user) => {
-    const response = await fetch('https://blog.kata.academy/api/users/login', {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify(user),
-    });
+import apiLogin from '../../Service/apiUsers/apiLogin';
+import apiUpdateUser from '../../Service/apiUsers/apiUpdateUser';
 
-    const login = await response.json();
-    if (login) {
-      localStorage.setItem('currentUser', JSON.stringify(login.user.token));
-    }
-    return login;
-  },
+export const fetchLogin = createAsyncThunk('userLogin/fetchLogin', apiLogin);
+export const fetchUpdateUser = createAsyncThunk(
+  'userLogin/updateUser',
+  apiUpdateUser,
 );
+const userData = localStorage.getItem('data');
 
 const initialState = {
-  user: {},
+  user: userData ? JSON.parse(userData) : null,
   status: null,
-  error: null,
-  token: null,
+  error: '',
 };
 
 const loginSlice = createSlice({
   name: 'userLogin',
   initialState,
   reducers: {
-    clearToken: (state, active) => ({
-      ...state,
-      token: active.payload,
-    }),
+    clearToken(state) {
+      state.user = null;
+    },
   },
   extraReducers: {
     [fetchLogin.pending]: (state) => {
       state.status = 'pending';
-      state.error = null;
+      state.user = null;
     },
-    [fetchLogin.fulfilled]: (state) => {
+    [fetchLogin.fulfilled]: (state, action) => {
       state.status = 'resolve';
+      state.user = action.payload;
     },
-    [fetchLogin.rejected]: () => {},
+    [fetchLogin.rejected]: (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload;
+      state.user = null;
+    },
+    [fetchUpdateUser.pending]: (state) => {
+      state.status = 'loading';
+      state.user = null;
+    },
+    [fetchUpdateUser.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+      state.user = action.payload;
+    },
+    [fetchUpdateUser.rejected]: (state) => {
+      state.status = 'rejected';
+      state.user = null;
+    },
   },
 });
-export const { loginF } = loginSlice.actions;
+export const { loginF, clearToken } = loginSlice.actions;
 export default loginSlice.reducer;

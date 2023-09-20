@@ -1,11 +1,13 @@
 .register {
-  width: 320px;
-  height: 500px;
-  margin-top: 59px;
-  padding: 48px 32px;
-  border-radius: 6px;
-  border: 1px solid #d9d9d9;
-  background-color: white;
+  width: 384px;
+  background-color: #ffffff;
+  margin-top: 60px;
+  margin-bottom: 60px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 40px 36px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   &_footer {
     display: flex;
     margin-top: 8px;

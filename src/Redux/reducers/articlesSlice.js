@@ -1,14 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import fetchArticles from '../../Service/apiArticles/apiArticles';
+
 export const fetchArticleList = createAsyncThunk(
   'articles/fetchArticleList',
-  async (offset) => {
-    const response = await fetch(
-      `https://blog.kata.academy/api/articles?offset=${offset}&limit=5`,
-    );
-    const articlesList = await response.json();
-    return articlesList;
-  },
+  fetchArticles,
 );
 
 const initialState = {
@@ -32,7 +28,10 @@ const articlesSlice = createSlice({
       state.articles = action.payload.articles;
       state.articlesCount = action.payload.articlesCount;
     },
-    [fetchArticleList.rejected]: () => {},
+    [fetchArticleList.rejected]: (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload;
+    },
   },
 });
 export const { loadArticles } = articlesSlice.actions;

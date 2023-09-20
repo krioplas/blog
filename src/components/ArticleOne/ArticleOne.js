@@ -1,57 +1,97 @@
-import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import format from 'date-fns/format';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { fetchArticlesFavorite } from '../../Redux/reducers/articlesFavoriteSlice';
+import { fetchArticlesUnFavorite } from '../../Redux/reducers/articlesUnFavoriteSlice';
 import { fetchArticleDetails } from '../../Redux/reducers/articleDetailsSlice';
 
 import stlArt from './ArticleOne.module.scss';
 
-function ArticleOne(props) {
+export default function ArticleOne(props) {
+  const {
+    slug,
+    title,
+    favoritesCount,
+    favorited,
+    description,
+    tagList,
+    createdAt,
+    author,
+  } = props.data;
+  const user = useSelector((state) => state.loginSlice.user);
   const dispatch = useDispatch();
 
-  const article = props.data;
+  const [likesCount, setLikesCount] = useState(favoritesCount);
+  const [isLiked, setIsLiked] = useState(favorited);
+  const onLikeClick = () => {
+    if (isLiked) {
+      setLikesCount(likesCount - 1);
+      dispatch(fetchArticlesUnFavorite(slug));
+    } else {
+      setLikesCount(likesCount + 1);
+      dispatch(fetchArticlesFavorite(slug));
+    }
+    setIsLiked(!isLiked);
+  };
+
   return (
-    <div>
-      <div className={stlArt.header}>
-        <div className={stlArt.headContent}>
-          <div className={stlArt.title}>
-            <Link
-              className={stlArt.title_text}
-              to={`/articles/${article.slug}`}
-              onClick={() => {
-                dispatch(fetchArticleDetails(article.slug));
-              }}
+    <div className={stlArt.article}>
+      <div className={stlArt.article__info}>
+        <div className={stlArt.article__info_block}>
+          <Link
+            to={`/articles/${slug}`}
+            className={stlArt.article__info_title}
+            onClick={() => dispatch(fetchArticleDetails(slug))}
+          >
+            {title}
+          </Link>
+          {user ? (
+            <button
+              type='button'
+              onClick={onLikeClick}
+              className={stlArt.article__info_likes}
             >
-              <div>{article.title}</div>
-            </Link>
-            <button type='button' className={stlArt.title_like}>
-              {article.favorited ? <span>❤️️</span> : <span>🤍</span>}
-              {article.favoritesCount}
+              {favorited || isLiked ? '❤️' : '🤍'} {likesCount}
             </button>
-          </div>
-          <div className={stlArt.tagList}>
-            {article.tagList.map((el) => (
-              <span key={Math.random() * 100} className={stlArt.tag}>
-                {el}
-              </span>
-            ))}
-          </div>
+          ) : (
+            <button type='button' className={stlArt.article__info_noaccess}>
+              🤍
+              {likesCount}
+            </button>
+          )}
         </div>
-        <div className={stlArt.userInfo}>
-          <div className={stlArt.userInfo_name}>
-            <span>{article.author.username}</span>
-            <span>{format(new Date(article.createdAt), 'MMMM dd, yyyy')}</span>
-          </div>
-          <img
-            src={article.author.image}
-            alt='ava'
-            className={stlArt.avatarImg}
-          />
+        <div className={stlArt.article__info_tagfield}>
+          {tagList?.map((el) => {
+            if (tagList.length > 0) {
+              return (
+                <span
+                  key={Math.random() * 10}
+                  className={stlArt.article__info_tags}
+                >
+                  {el}
+                </span>
+              );
+            }
+            return el;
+          })}
         </div>
+        <p className={stlArt.article__info_description}>{description}</p>
       </div>
-      <div className={stlArt.description}>{article.description}</div>
+      <div className={stlArt.article__user}>
+        <div>
+          <div className={stlArt.article__user_author}>{author.username}</div>
+          <div className={stlArt.article__user_date}>
+            {createdAt ? format(new Date(createdAt), 'MMM dd, yyyy') : null}
+          </div>
+        </div>
+        <img
+          className={stlArt.article__user_photo}
+          src={author.image}
+          alt='ava'
+        />
+      </div>
     </div>
   );
 }
-
-export default ArticleOne;

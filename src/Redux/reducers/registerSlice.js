@@ -1,19 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import apiRegister from '../../Service/apiUsers/apiRegistration';
+
 export const fetchRegister = createAsyncThunk(
   'users/fetchRegister',
-  async (user) => {
-    const response = await fetch('https://blog.kata.academy/api/users', {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify(user),
-    });
-    const register = await response.json();
-    return register;
-  },
+  apiRegister,
 );
 
 const initialState = {
@@ -33,9 +24,12 @@ const registerSlice = createSlice({
     },
     [fetchRegister.fulfilled]: (state, action) => {
       state.status = 'resolve';
-      state.articles = action.payload.user;
+      state.user = action.payload.user;
     },
-    [fetchRegister.rejected]: () => {},
+    [fetchRegister.rejected]: (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload;
+    },
   },
 });
 export const { registerF } = registerSlice.actions;

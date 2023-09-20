@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 22px;
+  background-color: #ffffff;
   a {
     text-decoration: none;
   }
@@ -16,6 +17,7 @@
   }
   &_authentication {
     display: flex;
+    align-items: center;
     font-family: 'Inter', sans-serif;
     font-size: 18px;
     line-height: 28px;
@@ -49,10 +51,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #52c41a;
+  color: #52c41a !important;
   width: 112px;
   height: 31px;
   font-size: 12px;
   border-radius: 5px;
   border: 1px solid #52c41a;
+}
+
+.username {
+  display: flex;
+  align-items: center;
+  padding: 18px;
+  font-size: 18px;
+  font-family: 'Inter', sans-serif;
+  line-height: 28px;
+  padding: 0 12px;
+}
+.logOut {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 109px;
+  height: 51px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  background: none;
+  font-size: 18px;
+  font-family: 'Inter', sans-serif;
+}
+.avatarImg {
+  margin: 0 12px;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
 }

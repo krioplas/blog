@@ -22,6 +22,8 @@ function RegisterForm() {
           username: data.username,
           email: data.email,
           password: data.password,
+          bio: 'test user Loginov',
+          image: 'https://img.icons8.com/nolan/64/user.png',
         },
       }),
     );

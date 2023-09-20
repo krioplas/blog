@@ -1,68 +1,87 @@
-.header {
+.article {
+  width: 70vw;
+  background-color: #ffffff;
+  height: 120px;
+  border-radius: 5px;
   display: flex;
-  justify-content: space-between;
-}
-.title {
-  font-size: 20px;
-  color: #1890ff;
-  display: flex;
-  &_text {
-    max-width: 550px;
-    overflow-wrap: break-word;
+  font-weight: 400;
+
+  &__info {
+    margin-right: auto;
+    margin-left: 19px;
+    margin-top: 15px;
+
+    &_block {
+      display: flex;
+      margin-bottom: 6px;
+    }
+
+    &_title {
+      display: flex;
+      color: #1890ff !important;
+      font-weight: 400;
+      margin-right: 12px;
+    }
+
+    &_likes {
+      background: none;
+      cursor: pointer;
+    }
+
+    &_noaccess {
+      background: none;
+    }
+
+    &_description {
+      overflow: hidden;
+      max-width: 500px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      height: 53px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    &_tagfield {
+      max-height: 20px;
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    &_tags {
+      display: inline-block;
+      max-width: 300px;
+      height: 20px;
+      overflow: hidden;
+      overflow-wrap: break-word;
+      font-size: 12px;
+      border: 1px solid black;
+      border-radius: 3px;
+      padding: 1px 5px 1px 5px;
+      margin-right: 5px;
+    }
   }
 
-  &_like {
-    cursor: pointer;
-    margin-left: 13px;
-    border: none;
-    background: none;
-  }
-}
-.tag {
-  padding: 3px;
-  font-size: 12px;
-  border-radius: 2px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-}
-.tagList {
-  margin-top: 8px;
-  :not(:nth-child(1)) {
-    margin-left: 8px;
-  }
-}
-.description {
-  margin-top: 8px;
-  color: rgba(0, 0, 0, 0.75);
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
-  overflow-wrap: break-word;
-}
-.avatarImg {
-  border-radius: 50%;
-  width: 46px;
-  height: 46px;
-}
-.userInfo {
-  display: flex;
-  &_name {
+  &__user {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding-top: 2px;
-    padding-right: 8px;
-    :nth-child(1) {
+    text-align: center;
+    margin: 15px;
+
+    &_author {
       font-size: 18px;
+      font-weight: 300;
+      margin: 5px;
+      margin-top: 2px;
     }
-    :nth-child(2) {
-      color: rgba(0, 0, 0, 0.5);
+    &_date {
       font-size: 12px;
-      font-weight: 400;
-      line-height: 22px;
+      color: #00000080;
+    }
+    &_photo {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      margin-left: 12px;
     }
   }
-}
-.articleOne {
-  overflow-wrap: break-word;
 }
