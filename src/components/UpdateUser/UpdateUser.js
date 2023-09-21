@@ -30,7 +30,7 @@ export default function UpdateUser() {
       },
     };
     dispatch(fetchUpdateUser(userData));
-    homePage.push(homePage);
+    home.push(homePage);
   };
 
   return (
