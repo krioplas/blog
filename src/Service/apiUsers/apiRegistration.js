@@ -6,8 +6,7 @@ export default async (userData, { rejectWithValue }) => {
       'https://blog.kata.academy/api/users/',
       userData,
     );
-    localStorage.setItem('token', response.data.user.token);
-    localStorage.setItem('data', JSON.stringify(response.data));
+
     return response.data;
   } catch (error) {
     return rejectWithValue(error.message);

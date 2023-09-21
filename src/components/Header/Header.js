@@ -2,6 +2,13 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { clearToken } from '../../Redux/reducers/loginSlice';
+import {
+  signIn,
+  signUp,
+  newArticle,
+  profile,
+  homePage,
+} from '../../routes/pathLink';
 
 import stlHead from './Header.module.scss';
 
@@ -9,7 +16,7 @@ function Header() {
   const user = useSelector((state) => state.loginSlice.user);
   return (
     <div className={stlHead.Header}>
-      <Link to='/' className={stlHead.Header_logo}>
+      <Link to={homePage} className={stlHead.Header_logo}>
         Realworld Blog
       </Link>
       {user === null ? <FormAuthorization /> : <FormAuthorized />}
@@ -22,34 +29,38 @@ export default Header;
 function FormAuthorization() {
   return (
     <div className={stlHead.Header_authentication}>
-      <Link to='/sign-in' className={stlHead.authorization}>
+      <Link to={signIn} className={stlHead.authorization}>
         Sign In
       </Link>
-      <Link to='/sign-up' className={stlHead.registration}>
+      <Link to={signUp} className={stlHead.registration}>
         Sign Up
       </Link>
     </div>
   );
 }
-
+const handleImageError = (event) => {
+  event.target.src =
+    'https://img.icons8.com/fluency-systems-regular/48/no-user-alt.png';
+};
 function FormAuthorized() {
   const dispatch = useDispatch();
-  const homePage = useHistory();
+  const home = useHistory();
   const userInfo = JSON.parse(localStorage.getItem('data'));
-  const avatar = localStorage.getItem('profileImage');
+
   return (
     <div className={stlHead.Header_authentication}>
-      <Link to='/new-article' className={stlHead.create_article}>
+      <Link to={newArticle} className={stlHead.create_article}>
         Create article
       </Link>
-      <Link to='/profile' className={stlHead.username}>
+      <Link to={profile} className={stlHead.username}>
         {userInfo.user.username}
 
         <img
+          onError={handleImageError}
           src={
-            avatar === undefined
-              ? userInfo.user.image
-              : 'https://img.icons8.com/fluency-systems-regular/48/no-user-alt.png'
+            userInfo.user.image === undefined
+              ? 'https://img.icons8.com/fluency-systems-regular/48/no-user-alt.png'
+              : userInfo.user.image
           }
           alt='ava'
           className={stlHead.avatarImg}
@@ -61,7 +72,7 @@ function FormAuthorized() {
         onClick={() => {
           localStorage.clear();
           dispatch(clearToken());
-          homePage.push('/');
+          home.push(homePage);
         }}
       >
         Log Out

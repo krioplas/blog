@@ -23,6 +23,9 @@ const loginSlice = createSlice({
     clearToken(state) {
       state.user = null;
     },
+    clearError(state) {
+      state.error = '';
+    },
   },
   extraReducers: {
     [fetchLogin.pending]: (state) => {
@@ -52,5 +55,5 @@ const loginSlice = createSlice({
     },
   },
 });
-export const { loginF, clearToken } = loginSlice.actions;
+export const { loginF, clearToken, clearError } = loginSlice.actions;
 export default loginSlice.reducer;

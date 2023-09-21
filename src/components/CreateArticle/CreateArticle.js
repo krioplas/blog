@@ -3,20 +3,23 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { fetchCreateArticles } from '../../Redux/reducers/createArticlesSlice';
+import { signIn, homePage } from '../../routes/pathLink';
 
 import stlCrArt from './CreateArticle.module.scss';
 
 export default function CreateArticle() {
   const dispatch = useDispatch();
-  const homePage = useHistory();
-
+  const home = useHistory();
+  const isAuth = localStorage.getItem('token');
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
-
+  if (isAuth === null) {
+    home.push(signIn);
+  }
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'tags',
@@ -32,7 +35,7 @@ export default function CreateArticle() {
       },
     };
     dispatch(fetchCreateArticles(articleText));
-    homePage.push('/');
+    homePage.push(homePage);
   };
 
   return (

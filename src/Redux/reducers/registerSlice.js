@@ -16,7 +16,12 @@ const initialState = {
 const registerSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    clearData(state) {
+      state.error = '';
+      state.status = null;
+    },
+  },
   extraReducers: {
     [fetchRegister.pending]: (state) => {
       state.status = 'pending';
@@ -32,5 +37,5 @@ const registerSlice = createSlice({
     },
   },
 });
-export const { registerF } = registerSlice.actions;
+export const { registerF, clearData } = registerSlice.actions;
 export default registerSlice.reducer;

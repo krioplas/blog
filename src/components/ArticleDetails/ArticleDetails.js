@@ -1,6 +1,6 @@
 import ReactMarkdown from 'react-markdown';
-import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,31 +8,33 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 import ArticleOne from '../ArticleOne/ArticleOne';
+import { fetchArticleDetails } from '../../Redux/reducers/articleDetailsSlice';
 import { fetchDeleteArticles } from '../../Redux/reducers/deleteArticlesSlice';
 
 import stlArtDet from './ArticleDetails.module.scss';
 
 function ArticleDetails() {
+  const adres = useParams();
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchArticleDetails(adres.slug));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const article = useSelector((state) => state.articleDetailsSlice.article);
   const status = useSelector((state) => state.articleDetailsSlice.status);
   const userInfo = JSON.parse(localStorage.getItem('data'));
-
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const homePage = useHistory();
-  const isAuthor = () => {
-    const authorName = userInfo?.user?.username;
-    return authorName === article.author.username;
-  };
 
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleCloseYes = () => {
     setOpen(false);
     dispatch(fetchDeleteArticles(article.slug));
@@ -41,9 +43,18 @@ function ArticleDetails() {
   const handleClose = () => {
     setOpen(false);
   };
-  if (status === 'pending') {
-    return <div>Загрузка</div>;
+
+  if (status === 'pending' || article.length === 0) {
+    return (
+      <Box sx={{ display: 'flex' }} className={stlArtDet.spin}>
+        <CircularProgress />
+      </Box>
+    );
   }
+  const isAuthor = () => {
+    const authorName = userInfo?.user?.username;
+    return authorName === article.author.username;
+  };
   return (
     <article className={stlArtDet.container}>
       <ArticleOne data={article} />

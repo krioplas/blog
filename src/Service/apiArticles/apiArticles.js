@@ -1,13 +1,17 @@
+import axios from 'axios';
+
 export default async (offset, { rejectWithValue }) => {
   try {
-    const response = await fetch(
-      `https://blog.kata.academy/api/articles?offset=${offset}&limit=5`,
+    const token = localStorage.getItem('token');
+    const response = await axios.get(
+      `https://blog.kata.academy/api/articles?limit=5&offset=${offset}`,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      },
     );
-    if (!response.ok) {
-      throw new Error(response.status);
-    }
-    const articlesList = await response.json();
-    return articlesList;
+    return response.data;
   } catch (error) {
     return rejectWithValue(error.message);
   }

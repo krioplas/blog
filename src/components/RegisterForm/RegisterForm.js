@@ -1,14 +1,17 @@
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { fetchRegister } from '../../Redux/reducers/registerSlice';
+import { signIn } from '../../routes/pathLink';
+import { clearData, fetchRegister } from '../../Redux/reducers/registerSlice';
 
 import stlRegForm from './RegisterForm.module.scss';
 
 function RegisterForm() {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.registerSlice.status);
+  const error = useSelector((state) => state.registerSlice.error);
   const {
     register,
     handleSubmit,
@@ -27,11 +30,14 @@ function RegisterForm() {
         },
       }),
     );
-  if (status) {
+  useEffect(() => {
+    dispatch(clearData());
+  }, [dispatch]);
+  if (status === 'resolve') {
     return (
-      <div>
+      <div className={stlRegForm.message}>
         Регистрация успешно завершена!
-        <Link to='/sign-in' style={{ fontSize: '18px' }}>
+        <Link to={signIn} style={{ fontSize: '18px' }}>
           Sign In
         </Link>
       </div>
@@ -40,6 +46,9 @@ function RegisterForm() {
   return (
     <form className={stlRegForm.register} onSubmit={handleSubmit(onSubmit)}>
       <h2>Create new account</h2>
+      {error !== '' ? (
+        <span style={{ color: 'red' }}>Такой логин или почта недоступны!</span>
+      ) : null}
       <div className={stlRegForm.register_inputs}>
         <label htmlFor='Username'>Username</label>
         <input
@@ -136,7 +145,7 @@ function RegisterForm() {
         <input type='submit' value='Create' className={stlRegForm.buttonReg} />
       </div>
       <span className={stlRegForm.footer}>
-        Already have an account? <Link to='/sign-in'>Sign In</Link>
+        Already have an account? <Link to={signIn}>Sign In</Link>
       </span>
     </form>
   );

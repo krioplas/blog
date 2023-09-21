@@ -3,20 +3,23 @@ import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 import { fetchUpdateUser } from '../../Redux/reducers/loginSlice';
+import { signIn, homePage } from '../../routes/pathLink';
 
 import stlUpdateUser from './UpdateUser.module.scss';
 
 export default function UpdateUser() {
   const dispatch = useDispatch();
-  const homePage = useHistory();
+  const home = useHistory();
   const user = useSelector((state) => state.loginSlice.user);
-
+  const isAuth = localStorage.getItem('token');
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  if (isAuth === null) {
+    home.push(signIn);
+  }
   const onSubmit = (formData) => {
     const userData = {
       user: {
@@ -27,7 +30,7 @@ export default function UpdateUser() {
       },
     };
     dispatch(fetchUpdateUser(userData));
-    homePage.push('/articles');
+    homePage.push(homePage);
   };
 
   return (

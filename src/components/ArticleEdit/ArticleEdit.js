@@ -10,6 +10,7 @@ export default function EditArticle() {
   const article = useSelector((state) => state.articleDetailsSlice.article);
   localStorage.setItem('slug', article.slug);
   const slug = localStorage.getItem('slug');
+  const isAuth = localStorage.getItem('token');
   const dispatch = useDispatch();
   const homePage = useHistory();
   const {
@@ -18,12 +19,13 @@ export default function EditArticle() {
     control,
     formState: { errors },
   } = useForm();
-
+  if (isAuth === null) {
+    homePage.push('/sign-in');
+  }
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'tags',
   });
-
   const onSubmit = (newData) => {
     const newTags = newData.newTags ? [newData.newTags] : [];
     const tagList = [...newData.tags.map((tag) => tag.name), ...newTags];
