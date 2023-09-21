@@ -35,7 +35,7 @@ export default function CreateArticle() {
       },
     };
     dispatch(fetchCreateArticles(articleText));
-    homePage.push(homePage);
+    home.push(homePage);
   };
 
   return (
